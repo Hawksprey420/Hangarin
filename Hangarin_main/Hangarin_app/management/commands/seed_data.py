@@ -45,7 +45,7 @@ class Command(BaseCommand):
                 SubTask.objects.create(
                     title=fake.sentence(nb_words=5).replace('.', ''),
                     status=fake.random_element(elements=task_status_choices),
-                    parent_task=task
+                    task=task
                 )
 
             # Create 0-2 notes for each task
