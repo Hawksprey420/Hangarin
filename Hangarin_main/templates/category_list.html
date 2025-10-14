@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Hangarin | Categories{% endblock %}
+{% block content %}
+<div class="card shadow-sm border-0">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="fw-bold mb-0">Categories</h4>
+      <a href="{% url 'category-add' %}" class="btn btn-primary btn-sm">
+        <i class="ti ti-plus"></i> Add Category
+      </a>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for category in categories %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td class="fw-semibold">{{ category.name }}</td>
+            <td>
+              <a href="{% url 'category-edit' category.id %}" class="btn btn-sm btn-warning"><i class="ti ti-edit"></i></a>
+              <a href="{% url 'category-delete' category.id %}" class="btn btn-sm btn-danger"><i class="ti ti-trash"></i></a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="3" class="text-center text-muted">No categories found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
