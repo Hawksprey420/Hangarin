@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 # Abstract base model to add created_at and updated_at
@@ -50,6 +51,12 @@ class Task(BaseModel):
 
     def __str__(self):
         return self.title
+
+    def is_overdue(self):
+        """Return True if deadline has passed and task isn't completed."""
+        if not self.deadline:
+            return False
+        return self.deadline < timezone.now() and self.status != "completed"
 
 
 class SubTask(BaseModel):
