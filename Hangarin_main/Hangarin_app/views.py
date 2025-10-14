@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.utils import timezone
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
 from .models import Task, Category, Priority, SubTask, Note
 from .forms import TaskForm
@@ -11,20 +11,27 @@ from django import forms
 # --------------------------
 # DASHBOARD VIEW
 # --------------------------
-def dashboard(request):
-    tasks = Task.objects.all()
-    pending = tasks.filter(status="pending").count()
-    in_progress = tasks.filter(status="in_progress").count()
-    completed = tasks.filter(status="completed").count()
 
-    context = {
-        'tasks': tasks,
-        'pending': pending,
-        'in_progress': in_progress,
-        'completed': completed,
-    }
-    return render(request, 'home.html', context)
+class DashboardView(TemplateView):
+    template_name = "dashboard.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # always fetch live data
+        tasks = Task.objects.all()
+
+        # make sure to trigger DB queries freshly
+        context["total_tasks"] = tasks.count()
+        context["completed_tasks"] = tasks.filter(status="completed").count()
+        context["pending_tasks"] = tasks.filter(status="pending").count()
+        context["overdue_tasks"] = tasks.filter(deadline__lt=timezone.now(), status__in=["pending", "in_progress"]).count()
+
+        # get only last 5 for preview
+        context["recent_tasks"] = tasks.order_by("-created_at")[:5]
+
+        return context
+    
 
 # --------------------------
 # TASK CRUD

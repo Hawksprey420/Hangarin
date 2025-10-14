@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Hangarin_app import views
+from Hangarin_app.views import DashboardView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.dashboard, name='dashboard'),
+    path("", DashboardView.as_view(), name="dashboard"),
     # For my tasks in url
     path('tasks/', views.TaskListView.as_view(), name='task-list'),
     path('tasks/add/', views.TaskCreateView.as_view(), name='task-add'),
