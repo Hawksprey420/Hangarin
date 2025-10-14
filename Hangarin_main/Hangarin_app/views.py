@@ -149,10 +149,27 @@ class PriorityDeleteView(DeleteView):
 # --------------------------
 class SubTaskListView(ListView):
     model = SubTask
-    template_name = 'subtask_list.html'
-    context_object_name = 'subtasks'
-    paginate_by = 20  # Adjust as needed
+    template_name = "subtask_list.html"
+    context_object_name = "subtasks"
+    paginate_by = 10
+    ordering = ["-created_at"]
 
+    def get_queryset(self):
+        queryset = super().get_queryset().select_related("task")
+
+        # Capture search query from ?q=
+        query = self.request.GET.get("q")
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) | Q(task__title__icontains=query)
+            )
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_query"] = self.request.GET.get("q", "")
+        return context
 
 class SubTaskCreateView(CreateView):
     model = SubTask

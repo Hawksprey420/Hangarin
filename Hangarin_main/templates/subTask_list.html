@@ -11,6 +11,16 @@
 
     <div class="table-responsive">
       <table class="table table-hover align-middle">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <form method="get" class="d-flex" role="search">
+                <input type="text" name="q" class="form-control me-2" placeholder="Search subtasks..."
+                    value="{{ search_query }}">
+                <button class="btn btn-outline-primary" type="submit">
+                <i class="ti ti-search"></i>
+                </button>
+            </form>
+        </div>
+
         <thead class="table-light">
           <tr><th>#</th><th>Parent Task</th><th>Title</th><th>Status</th><th>Actions</th></tr>
         </thead>

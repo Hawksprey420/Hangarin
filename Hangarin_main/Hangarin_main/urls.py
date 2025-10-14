@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from Hangarin_app import views
 from Hangarin_app.views import DashboardView
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("accounts/", include("allauth.urls")),
     path("", DashboardView.as_view(), name="dashboard"),
     # For my tasks in url
     path('tasks/', views.TaskListView.as_view(), name='task-list'),

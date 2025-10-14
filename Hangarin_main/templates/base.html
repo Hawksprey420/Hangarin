@@ -67,18 +67,28 @@
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Tasks</span>
             </li>
+
             <li class="sidebar-item {% if request.resolver_match.url_name == 'task-list' %}active{% endif %}">
               <a class="sidebar-link" href="{% url 'task-list' %}">
                 <span><i class="ti ti-list-details"></i></span>
                 <span class="hide-menu">All Tasks</span>
               </a>
             </li>
+
             <li class="sidebar-item {% if request.resolver_match.url_name == 'task-add' %}active{% endif %}">
               <a class="sidebar-link" href="{% url 'task-add' %}">
                 <span><i class="ti ti-plus"></i></span>
                 <span class="hide-menu">Add Task</span>
               </a>
             </li>
+
+            <li class="sidebar-item {% if request.resolver_match.url_name == 'subtask-list' %}active{% endif %}">
+              <a class="sidebar-link" href="{% url 'subtask-list' %}">
+                <span><i class="ti ti-checklist"></i></span>
+                <span class="hide-menu">Subtasks</span>
+              </a>
+            </li>
+
 
             <!-- Categories & Priorities -->
             <li class="sidebar-item {% if request.resolver_match.url_name == 'category-list' %}active{% endif %}">
