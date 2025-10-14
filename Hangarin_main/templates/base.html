@@ -1,7 +1,6 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,10 +9,25 @@
   <!-- Favicon + CSS -->
   <link rel="shortcut icon" type="image/png" href="{% static 'images/logos/favicon.png' %}" />
   <link rel="stylesheet" href="{% static 'css/styles.min.css' %}" />
+
+  <style>
+    /* Highlight active sidebar link */
+    .sidebar-item.active > a {
+      background-color: #5D87FF !important;
+      color: #fff !important;
+      border-radius: 10px;
+    }
+    .sidebar-item.active i {
+      color: #fff !important;
+    }
+    .sidebar-item a:hover {
+      background-color: rgba(93, 135, 255, 0.1);
+      border-radius: 10px;
+    }
+  </style>
 </head>
 
 <body>
-  <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper"
        data-layout="vertical" data-navbarbg="skin6"
        data-sidebartype="full" data-sidebar-position="fixed"
@@ -41,8 +55,8 @@
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Your Data</span>
             </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url 'dashboard' %}" aria-expanded="false">
+            <li class="sidebar-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+              <a class="sidebar-link" href="{% url 'dashboard' %}">
                 <span><i class="ti ti-layout-dashboard"></i></span>
                 <span class="hide-menu">Dashboard</span>
               </a>
@@ -53,27 +67,29 @@
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Tasks</span>
             </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url 'task-list' %}" aria-expanded="false">
+            <li class="sidebar-item {% if request.resolver_match.url_name == 'task-list' %}active{% endif %}">
+              <a class="sidebar-link" href="{% url 'task-list' %}">
                 <span><i class="ti ti-list-details"></i></span>
                 <span class="hide-menu">All Tasks</span>
               </a>
             </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url 'task-add' %}" aria-expanded="false">
+            <li class="sidebar-item {% if request.resolver_match.url_name == 'task-add' %}active{% endif %}">
+              <a class="sidebar-link" href="{% url 'task-add' %}">
                 <span><i class="ti ti-plus"></i></span>
                 <span class="hide-menu">Add Task</span>
               </a>
             </li>
 
             <!-- Categories & Priorities -->
-            <li class="sidebar-item">
+            <li class="sidebar-item {% if request.resolver_match.url_name == 'category-list' %}active{% endif %}">
               <a class="sidebar-link" href="{% url 'category-list' %}">
-                <span><i class="ti ti-category"></i></span><span class="hide-menu">Categories</span>
+                <span><i class="ti ti-category"></i></span>
+                <span class="hide-menu">Categories</span>
               </a>
             </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url 'priority-list' %}" aria-expanded="false">
+
+            <li class="sidebar-item {% if request.resolver_match.url_name == 'priority-list' %}active{% endif %}">
+              <a class="sidebar-link" href="{% url 'priority-list' %}">
                 <span><i class="ti ti-flag"></i></span>
                 <span class="hide-menu">Priorities</span>
               </a>
@@ -120,8 +136,6 @@
           <!-- User Dropdown -->
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-              <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/"
-                 target="_blank" class="btn btn-primary">Download Free</a>
               <li class="nav-item dropdown">
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
                    data-bs-toggle="dropdown" aria-expanded="false">
@@ -165,7 +179,6 @@
   <script src="{% static 'js/sidebarmenu.js' %}"></script>
   <script src="{% static 'js/app.min.js' %}"></script>
   <script src="{% static 'libs/simplebar/dist/simplebar.js' %}"></script>
-
   {% block scripts %}{% endblock %}
 </body>
 </html>

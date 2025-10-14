@@ -1,3 +1,5 @@
+from django.db.models import Q
+from django.utils import timezone
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -31,6 +33,28 @@ class TaskListView(ListView):
     model = Task
     template_name = 'task_list.html'
     context_object_name = 'tasks'
+    paginate_by = 20  # Adjust as needed
+    
+    def get_queryset(self):
+        qs = super().get_queryset().select_related("priority", "category")
+        query = self.request.GET.get("q")
+        sort_by = self.request.GET.get("sort_by")
+
+        if query:
+            qs = qs.filter(
+                Q(title__icontains=query)
+                | Q(description__icontains=query)
+                | Q(category__name__icontains=query)
+                | Q(priority__name__icontains=query)
+            )
+
+        allowed = ["title", "deadline", "status", "priority__name", "category__name"]
+        if sort_by in allowed:
+            qs = qs.order_by(sort_by)
+        else:
+            qs = qs.order_by("deadline")
+
+        return qs
 
 
 class TaskCreateView(CreateView):
@@ -60,6 +84,7 @@ class CategoryListView(ListView):
     model = Category
     template_name = 'category_list.html'
     context_object_name = 'categories'
+    paginate_by = 20  # Adjust as needed
 
 
 class CategoryCreateView(CreateView):
@@ -89,6 +114,7 @@ class PriorityListView(ListView):
     model = Priority
     template_name = 'priority_list.html'
     context_object_name = 'priorities'
+    paginate_by = 20  # Adjust as needed
 
 
 class PriorityCreateView(CreateView):
@@ -118,6 +144,7 @@ class SubTaskListView(ListView):
     model = SubTask
     template_name = 'subtask_list.html'
     context_object_name = 'subtasks'
+    paginate_by = 20  # Adjust as needed
 
 
 class SubTaskCreateView(CreateView):
@@ -147,6 +174,7 @@ class NoteListView(ListView):
     model = Note
     template_name = 'note_list.html'
     context_object_name = 'notes'
+    paginate_by = 20  # Adjust as needed
 
 
 class NoteCreateView(CreateView):
