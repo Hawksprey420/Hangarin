@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('pwa.urls')),
     path("accounts/", include("allauth.urls")),
+    path('', include('Hangarin_app.urls')),
     path("", DashboardView.as_view(), name="dashboard"),
     # For my tasks in url
     path('tasks/', views.TaskListView.as_view(), name='task-list'),

@@ -7,8 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Hangarin | Dashboard{% endblock %}</title>
 
-  <!-- Favicon + CSS -->
-  <link rel="shortcut icon" type="image/png" href="{% static 'images/logos/favicon.png' %}" />
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}">
+  <link rel="icon" type="image/png" sizes="192x192" href="{% static 'img/icon-192.png' %}">
+  <link rel="icon" type="image/png" sizes="512x512" href="{% static 'img/icon-512.png' %}">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="{% static 'css/styles.min.css' %}" />
 
   <style>
@@ -26,8 +30,10 @@
       border-radius: 10px;
     }
   </style>
+
   {% progressive_web_app_meta %}
 </head>
+
 
 <body>
   <div class="page-wrapper" id="main-wrapper"
