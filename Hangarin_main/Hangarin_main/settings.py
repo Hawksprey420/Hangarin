@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import socket
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -47,7 +48,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'Hangarin_app',
     'widget_tweaks',
+    'pwa',
 ]
+
+# if "pythonanywhere" in socket.gethostname(): 
+#     SITE_ID = 3  # production site (hawksprey420.pythonanywhere.com) 
+# else: 
+#     SITE_ID = 2  # local site (127.0.0.1:8000)
 
 SITE_ID = 2
 
@@ -160,3 +167,36 @@ ACCOUNT_SIGNUP_FIELDS = [
 "password1*",
 "password2*",
 ]
+
+#----Progressive Web App (PWA) settings----
+PWA_APP_NAME = 'Hangarin'
+PWA_APP_DESCRIPTION = "A Progressive Web App version of Hangarinn"
+PWA_APP_THEME_COLOR = '#0A0A0A'
+PWA_APP_BACKGROUND_COLOR = '#FFFFFF'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'portrait'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+{
+'src': '/static/img/icon-192.png',
+'sizes': '192x192'
+},
+{
+'src': '/static/img/icon-512.png',
+'sizes': '512x512'
+}
+]
+PWA_APP_ICONS_APPLE = [
+{
+'src': '/static/img/icon-192.png',
+'sizes': '192x192'
+},
+{
+'src': '/static/img/icon-512.png',
+'sizes': '512x512'
+}
+]
+PWA_APP_DIR = 'ltr'
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')

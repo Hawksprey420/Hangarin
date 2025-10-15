@@ -22,6 +22,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('pwa.urls')),
     path("accounts/", include("allauth.urls")),
     path("", DashboardView.as_view(), name="dashboard"),
     # For my tasks in url
