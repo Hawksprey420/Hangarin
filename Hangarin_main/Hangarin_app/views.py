@@ -44,24 +44,46 @@ class TaskListView(ListView):
     
     def get_queryset(self):
         qs = super().get_queryset().select_related("priority", "category")
-        query = self.request.GET.get("q")
+        q = self.request.GET.get("q")
+        status = self.request.GET.get("status")
+        category = self.request.GET.get("category")
+        priority = self.request.GET.get("priority")
         sort_by = self.request.GET.get("sort_by")
 
-        if query:
+        # Full-text search
+        if q:
             qs = qs.filter(
-                Q(title__icontains=query)
-                | Q(description__icontains=query)
-                | Q(category__name__icontains=query)
-                | Q(priority__name__icontains=query)
+                Q(title__icontains=q)
+                | Q(description__icontains=q)
+                | Q(category__name__icontains=q)
+                | Q(priority__name__icontains=q)
             )
 
-        allowed = ["title", "deadline", "status", "priority__name", "category__name"]
-        if sort_by in allowed:
-            qs = qs.order_by(sort_by)
-        else:
-            qs = qs.order_by("deadline")
+        # Filtering logic
+        if status and status != "all":
+            qs = qs.filter(status=status)
+        if category and category != "all":
+            qs = qs.filter(category__id=category)
+        if priority and priority != "all":
+            qs = qs.filter(priority__id=priority)
+
+        # Sorting logic
+        allowed_sorts = {
+            "deadline": "deadline",
+            "priority": "-priority__level" if hasattr(Task, "priority__level") else "-priority__name",
+            "recent": "-created_at",
+            "title": "title",
+        }
+        qs = qs.order_by(allowed_sorts.get(sort_by, "deadline"))
 
         return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categories"] = Category.objects.all()
+        context["priorities"] = Priority.objects.all()
+        context["request_params"] = self.request.GET
+        return context
 
 
 class TaskCreateView(CreateView):
