@@ -177,20 +177,31 @@ class SubTaskListView(ListView):
     ordering = ["-created_at"]
 
     def get_queryset(self):
-        queryset = super().get_queryset().select_related("task")
+        queryset = super().get_queryset().select_related("task", "task__priority", "task__category")
 
-        # Capture search query from ?q=
         query = self.request.GET.get("q")
+        category = self.request.GET.get("category")
+        priority = self.request.GET.get("priority")
+
         if query:
             queryset = queryset.filter(
-                Q(title__icontains=query) | Q(task__title__icontains=query)
+                Q(title__icontains=query) |
+                Q(task__title__icontains=query)
             )
+
+        if category and category != "all":
+            queryset = queryset.filter(task__category__id=category)
+
+        if priority and priority != "all":
+            queryset = queryset.filter(task__priority__id=priority)
 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["search_query"] = self.request.GET.get("q", "")
+        context["categories"] = Category.objects.all()
+        context["priorities"] = Priority.objects.all()
         return context
 
 class SubTaskCreateView(CreateView):
