@@ -1,0 +1,132 @@
+{% load static i18n account socialaccount %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hangarin | Sign Up</title>
+
+  <link rel="shortcut icon" href="{% static 'images/logos/favicon.png' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.min.css' %}">
+  <style>
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 8px;
+      padding: 10px;
+      font-weight: 500;
+      width: 100%;
+    }
+    .social-btn img {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-wrapper d-flex align-items-center justify-content-center min-vh-100 radial-gradient">
+    <div class="card shadow-lg border-0" style="max-width: 420px;">
+      <div class="card-body p-4">
+
+        <!-- Logo -->
+        <a href="{% url 'dashboard' %}" class="text-nowrap logo-img text-center d-block mb-3">
+          <img src="{% static 'images/logos/dark-logo.svg' %}" width="160" alt="Hangarin Logo">
+        </a>
+
+        <h4 class="text-center mb-4 fw-bold">Create your account</h4>
+
+        <!-- SIGNUP FORM -->
+        <form method="post" action="{% url 'account_signup' %}">
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+          {% endif %}
+
+          <div class="mb-3">
+            <label for="id_username" class="form-label fw-semibold">Username</label>
+            <input type="text" name="username" id="id_username"
+                   class="form-control" placeholder="Username"
+                   value="{{ form.username.value|default_if_none:'' }}">
+            {% if form.username.errors %}
+              <div class="text-danger small">{{ form.username.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label for="id_email" class="form-label fw-semibold">Email Address</label>
+            <input type="email" name="email" id="id_email"
+                   class="form-control" placeholder="Email"
+                   value="{{ form.email.value|default_if_none:'' }}">
+            {% if form.email.errors %}
+              <div class="text-danger small">{{ form.email.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label for="id_password1" class="form-label fw-semibold">Password</label>
+            <input type="password" name="password1" id="id_password1"
+                   class="form-control" placeholder="Password">
+            {% if form.password1.errors %}
+              <div class="text-danger small">{{ form.password1.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-4">
+            <label for="id_password2" class="form-label fw-semibold">Confirm Password</label>
+            <input type="password" name="password2" id="id_password2"
+                   class="form-control" placeholder="Re-enter password">
+            {% if form.password2.errors %}
+              <div class="text-danger small">{{ form.password2.errors }}</div>
+            {% endif %}
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 py-2 mb-3 rounded-2">Sign Up</button>
+        </form>
+
+        <!-- SOCIAL SIGNUP BUTTONS -->
+        {% if socialaccount_providers %}
+        <div class="text-center mt-4">
+          <p class="text-muted mb-2">Or sign up with</p>
+          <div class="d-flex flex-column gap-2">
+            {% providers_media_js %}
+            {% for provider in socialaccount_providers %}
+              {% if provider.id == "google" %}
+                <a href="{% provider_login_url provider.id %}" class="btn btn-outline-secondary social-btn">
+                  <img src="{% static 'images/icons/google.svg' %}" alt="Google">
+                  Sign up with Google
+                </a>
+              {% elif provider.id == "github" %}
+                <a href="{% provider_login_url provider.id %}" class="btn btn-outline-dark social-btn">
+                  <i class="ti ti-brand-github fs-5"></i>
+                  Sign up with GitHub
+                </a>
+              {% else %}
+                <a href="{% provider_login_url provider.id %}" class="btn btn-outline-secondary social-btn">
+                  <i class="ti ti-user fs-5"></i>
+                  {{ provider.name }}
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="text-center mt-4">
+          <p>Already have an account? 
+            <a href="{% url 'account_login' %}" class="fw-bold text-primary">Sign in</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
