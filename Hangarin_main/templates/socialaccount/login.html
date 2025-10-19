@@ -7,9 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Hangarin | Sign In{% endblock %}</title>
 
+  <!-- Favicon + CSS -->
   <link rel="shortcut icon" type="image/png" href="{% static 'images/logos/favicon.png' %}" />
   <link rel="stylesheet" href="{% static 'css/styles.min.css' %}" />
 
+  <!-- 🔵 Unified Inline CSS (copied from accounts/login.html) -->
   <style>
     body {
       background: radial-gradient(circle at top left, #eef3ff, #ffffff);
@@ -20,7 +22,9 @@
       border-radius: 16px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     }
-    input[type="text"], input[type="email"], input[type="password"] {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
       border-radius: 10px;
       padding: 10px 14px;
       border: 1px solid #d6d9e0;
@@ -58,6 +62,7 @@
             <div class="card mb-0 shadow-lg border-0">
               <div class="card-body p-4">
 
+                <!-- Logo -->
                 <a href="{% url 'dashboard' %}" class="text-nowrap logo-img text-center d-block py-3 w-100">
                   <img src="{% static 'images/logos/dark-logo.svg' %}" width="180" alt="Hangarin Logo" />
                 </a>
@@ -65,6 +70,7 @@
                   Welcome back. Please sign in to continue.
                 </p>
 
+                <!-- Allauth Login Form -->
                 <form method="post" action="{% url 'account_login' %}" novalidate>
                   {% csrf_token %}
 
@@ -101,29 +107,26 @@
                   </button>
                 </form>
 
+                <!-- 🔵 Social Login Section -->
+                {% get_providers as socialaccount_providers %}
                 {% if socialaccount_providers %}
-                <div class="position-relative text-center my-4">
-                    <p class="mb-0 fs-4 px-3 d-inline-block bg-white text-dark z-index-5 position-relative">
-                        Or sign in with
-                    </p>
-                    <span class="border-top w-100 position-absolute top-50 start-50 translate-middle-y"></span>
-                </div>
-
-                <div class="row">
-                    {% for provider in socialaccount_providers %}
-                    <div class="col">
-                        <a class="btn btn-outline-secondary w-100 py-2 d-flex align-items-center justify-content-center" href="{% provider_login_url provider.id %}" role="button">
-                            {% if provider.id == "google" %}
-                                <img src="{% static 'images/icons/google.png' %}" alt="Google" width="20" class="me-2">
-                            {% elif provider.id == "github" %}
-                                <i class="ti ti-brand-github fs-5 me-2"></i>
-                            {% else %}
-                                <i class="ti ti-user fs-5 me-2"></i>
-                            {% endif %}
-                            {{ provider.name }}
+                <div class="text-center mt-4">
+                    <p class="text-muted mb-2">Or sign in with</p>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                      {% providers_media_js %}
+                      {% for provider in socialaccount_providers %}
+                        <a href="{% provider_login_url provider.id %}" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+                          {% if provider.id == "google" %}
+                            <img src="{% static 'images/icons/google.png' %}" width="18" alt="Google">
+                          {% elif provider.id == "github" %}
+                            <i class="ti ti-brand-github fs-5"></i>
+                          {% else %}
+                            <i class="ti ti-user fs-5"></i>
+                          {% endif %}
+                          {{ provider.name }}
                         </a>
+                      {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
                 {% endif %}
 
@@ -140,6 +143,7 @@
     </div>
   </div>
 
+  <!-- JS -->
   <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
 </body>
