@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
-from .models import Task, Category, Priority, SubTask, Note
+from Hangarin_app.models import Task, Category, Priority, SubTask, Note
 from .forms import TaskForm
 from django import forms
 
