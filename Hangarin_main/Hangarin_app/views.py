@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
-from Hangarin_app.models import Task, Category, Priority, SubTask, Note
+from .models import Task, Category, Priority, SubTask, Note
 from .forms import TaskForm
 from django import forms
 
@@ -207,20 +207,20 @@ class SubTaskListView(ListView):
 class SubTaskCreateView(CreateView):
     model = SubTask
     fields = ['task', 'title', 'status']
-    template_name = 'subtask_form.html'
+    template_name = 'subTask_form.html'
     success_url = reverse_lazy('subtask-list')
 
 
 class SubTaskUpdateView(UpdateView):
     model = SubTask
     fields = ['task', 'title', 'status']
-    template_name = 'subtask_form.html'
+    template_name = 'subTask_form.html'
     success_url = reverse_lazy('subtask-list')
 
 
 class SubTaskDeleteView(DeleteView):
     model = SubTask
-    template_name = 'subtask_delete.html'
+    template_name = 'subTask_delete.html'
     success_url = reverse_lazy('subtask-list')
 
 
