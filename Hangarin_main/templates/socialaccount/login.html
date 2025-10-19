@@ -1,17 +1,15 @@
-{% load static i18n account socialaccount widget_tweaks %}
+{% load static i18n account socialaccount %}
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Hangarin | Sign In{% endblock %}</title>
+  <title>Hangarin | Confirm Sign In</title>
 
   <!-- Favicon + CSS -->
   <link rel="shortcut icon" type="image/png" href="{% static 'images/logos/favicon.png' %}" />
   <link rel="stylesheet" href="{% static 'css/styles.min.css' %}" />
 
-  <!-- 🔵 Unified Inline CSS (copied from accounts/login.html) -->
   <style>
     body {
       background: radial-gradient(circle at top left, #eef3ff, #ffffff);
@@ -21,20 +19,6 @@
       border: none;
       border-radius: 16px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    }
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-      border-radius: 10px;
-      padding: 10px 14px;
-      border: 1px solid #d6d9e0;
-      width: 100%;
-      transition: border-color 0.2s ease;
-    }
-    input:focus {
-      border-color: #5D87FF;
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(93, 135, 255, 0.2);
     }
     .btn-outline-secondary {
       border-color: #d0d0d0;
@@ -50,100 +34,34 @@
 </head>
 
 <body>
-  <div class="page-wrapper" id="main-wrapper"
-       data-layout="vertical" data-navbarbg="skin6"
-       data-sidebartype="full" data-sidebar-position="fixed"
-       data-header-position="fixed">
+  <div class="page-wrapper d-flex align-items-center justify-content-center min-vh-100">
+    <div class="card shadow-lg border-0" style="max-width: 420px;">
+      <div class="card-body p-4 text-center">
 
-    <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
-      <div class="d-flex align-items-center justify-content-center w-100">
-        <div class="row justify-content-center w-100">
-          <div class="col-md-8 col-lg-6 col-xxl-3">
-            <div class="card mb-0 shadow-lg border-0">
-              <div class="card-body p-4">
+        <a href="{% url 'dashboard' %}" class="text-nowrap logo-img d-block mb-3">
+          <img src="{% static 'images/logos/dark-logo.svg' %}" width="180" alt="Hangarin Logo">
+        </a>
 
-                <!-- Logo -->
-                <a href="{% url 'dashboard' %}" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                  <img src="{% static 'images/logos/dark-logo.svg' %}" width="180" alt="Hangarin Logo" />
-                </a>
-                <p class="text-center text-muted mb-4">
-                  Welcome back. Please sign in to continue.
-                </p>
+        <h4 class="fw-bold mb-3">Confirm Sign In</h4>
+        <p class="text-muted mb-4">
+          You’re about to sign in using your <strong>{{ provider.name }}</strong> account.
+        </p>
 
-                <!-- Allauth Login Form -->
-                <form method="post" action="{% url 'account_login' %}" novalidate>
-                  {% csrf_token %}
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary w-100 mb-3">
+            Continue with {{ provider.name }}
+          </button>
+        </form>
 
-                  {% if form.non_field_errors %}
-                    <div class="alert alert-danger py-2">{{ form.non_field_errors }}</div>
-                  {% endif %}
+        <a href="{% url 'account_login' %}" class="btn btn-outline-secondary w-100">
+          Cancel
+        </a>
 
-                  <div class="mb-3">
-                    <label for="id_login" class="form-label fw-semibold">Username or Email</label>
-                    {{ form.login|add_class:"form-control" }}
-                  </div>
-
-                  <div class="mb-4">
-                    <label for="id_password" class="form-label fw-semibold">Password</label>
-                    {{ form.password|add_class:"form-control" }}
-                  </div>
-
-                  {% if redirect_field_value %}
-                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-                  {% endif %}
-
-                  <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="form-check">
-                      <input class="form-check-input primary" type="checkbox" name="remember" id="id_remember" checked>
-                      <label class="form-check-label text-dark" for="id_remember">
-                        Remember this device
-                      </label>
-                    </div>
-                    <a class="text-primary fw-bold" href="{% url 'account_reset_password' %}">Forgot Password?</a>
-                  </div>
-
-                  <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
-                    Sign In
-                  </button>
-                </form>
-
-                <!-- 🔵 Social Login Section -->
-                {% get_providers as socialaccount_providers %}
-                {% if socialaccount_providers %}
-                <div class="text-center mt-4">
-                    <p class="text-muted mb-2">Or sign in with</p>
-                    <div class="d-flex justify-content-center gap-3 flex-wrap">
-                      {% providers_media_js %}
-                      {% for provider in socialaccount_providers %}
-                        <a href="{% provider_login_url provider.id %}" class="btn btn-outline-secondary d-flex align-items-center gap-2">
-                          {% if provider.id == "google" %}
-                            <img src="{% static 'images/icons/google.png' %}" width="18" alt="Google">
-                          {% elif provider.id == "github" %}
-                            <i class="ti ti-brand-github fs-5"></i>
-                          {% else %}
-                            <i class="ti ti-user fs-5"></i>
-                          {% endif %}
-                          {{ provider.name }}
-                        </a>
-                      {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
-
-                <div class="d-flex align-items-center justify-content-center mt-4">
-                  <p class="fs-5 mb-0 fw-semibold text-muted">New to Hangarin?</p>
-                  <a class="text-primary fw-bold ms-2" href="{% url 'account_signup' %}">Create an account</a>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
 
-  <!-- JS -->
   <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
 </body>
