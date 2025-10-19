@@ -51,12 +51,17 @@ INSTALLED_APPS = [
     'pwa',
 ]
 
-# if "pythonanywhere" in socket.gethostname(): 
-#     SITE_ID = 3  # production site (hawksprey420.pythonanywhere.com) 
-# else: 
-#     SITE_ID = 2  # local site (127.0.0.1:8000)
+# if "pythonanywhere" in socket.gethostname():
+#     SITE_ID = 4  # production site (hawksprey69.pythonanywhere.com)
+# else:
+#     SITE_ID = 3  # local site (127.0.0.1:8080)
 
-SITE_ID = 2
+hostname = socket.gethostname()
+if "pythonanywhere" in hostname or "hawksprey" in hostname:
+    SITE_ID = 6  # production
+else:
+    SITE_ID = 3  # local
+#SITE_ID = 3
 
 AUTHENTICATION_BACKENDS = [
 'django.contrib.auth.backends.ModelBackend',
@@ -89,12 +94,13 @@ TEMPLATES = [
         "DIRS": [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
+                'context_processors': [
+                    'django.template.context_processors.debug',
+                    'django.template.context_processors.request',
+                    'django.contrib.auth.context_processors.auth',
+                    'django.contrib.messages.context_processors.messages',
+                    'django.template.context_processors.static',
+                ],
         },
     },
 ]
