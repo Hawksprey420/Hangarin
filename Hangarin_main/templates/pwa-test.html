@@ -1,0 +1,19 @@
+{% load static pwa %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PWA Test</title>
+  {% progressive_web_app_meta %}
+</head>
+<body>
+  <h1>PWA Test Page</h1>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/serviceworker.js')
+      .then(r => console.log('Registered:', r))
+      .catch(e => console.error(e));
+  }
+  </script>
+</body>
+</html>
