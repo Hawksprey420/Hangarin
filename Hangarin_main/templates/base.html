@@ -5,36 +5,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Hangarin | Dashboard{% endblock %}</title>
+  <title>{% block title %}Hangarin{% endblock %}</title>
 
   <!-- Favicon -->
-  <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}">
-  <link rel="icon" type="image/png" sizes="192x192" href="{% static 'img/icon-192.png' %}">
-  <link rel="icon" type="image/png" sizes="512x512" href="{% static 'img/icon-512.png' %}">
+  <link rel="icon" type="image/png" href="{% static 'images/logos/favicon.png' %}" />
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="{% static 'css/styles.min.css' %}" />
+  <!-- ✅ Manifest (correct path for Django) -->
+  <link rel="manifest" href="/static/manifest.json" crossorigin="use-credentials">
 
-  <style>
-    /* Highlight active sidebar link */
-    .sidebar-item.active > a {
-      background-color: #5D87FF !important;
-      color: #fff !important;
-      border-radius: 10px;
-    }
-    .sidebar-item.active i {
-      color: #fff !important;
-    }
-    .sidebar-item a:hover {
-      background-color: rgba(93, 135, 255, 0.1);
-      border-radius: 10px;
-    }
-  </style>
 
+  <!-- ✅ PWA Meta Tags -->
   {% progressive_web_app_meta %}
+
+  <!-- Theme Color (for mobile status bar) -->
+  <meta name="theme-color" content="#0A0A0A">
+
+  <!-- ✅ Bootstrap & Core CSS -->
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token }}">
+
+  {% block extra_head %}{% endblock %}
 </head>
-
-
 <body>
   <div class="page-wrapper" id="main-wrapper"
        data-layout="vertical" data-navbarbg="skin6"
@@ -44,10 +37,9 @@
     <!-- Sidebar Start -->
     <aside class="left-sidebar">
       <div>
-        <!-- Brand Logo -->
         <div class="brand-logo d-flex align-items-center justify-content-between">
           <a href="{% url 'dashboard' %}" class="text-nowrap logo-img">
-            <img src="{% static 'images/logos/dark-logo.svg' %}" width="180" alt="Hangarin Logo" />
+            <img src="{% static 'images/logos/dark-logo.svg' %}" width="180" alt="Hangarin Logo">
           </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             <i class="ti ti-x fs-8"></i>
@@ -57,12 +49,11 @@
         <!-- Sidebar Navigation -->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">
-
-            <!-- Dashboard -->
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Your Data</span>
             </li>
+
             <li class="sidebar-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
               <a class="sidebar-link" href="{% url 'dashboard' %}">
                 <span><i class="ti ti-layout-dashboard"></i></span>
@@ -70,7 +61,6 @@
               </a>
             </li>
 
-            <!-- Tasks -->
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Tasks</span>
@@ -97,8 +87,6 @@
               </a>
             </li>
 
-
-            <!-- Categories & Priorities -->
             <li class="sidebar-item {% if request.resolver_match.url_name == 'category-list' %}active{% endif %}">
               <a class="sidebar-link" href="{% url 'category-list' %}">
                 <span><i class="ti ti-category"></i></span>
@@ -114,8 +102,7 @@
             </li>
           </ul>
 
-          <!-- Sidebar Footer -->
-          <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
+          {% comment %} <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
             <div class="d-flex">
               <div class="unlimited-access-title me-3">
                 <h6 class="fw-semibold fs-4 mb-6 text-dark w-85">Upgrade to Pro</h6>
@@ -126,15 +113,14 @@
                 <img src="{% static 'images/backgrounds/rocket.png' %}" alt="" class="img-fluid">
               </div>
             </div>
-          </div>
+          </div> {% endcomment %}
         </nav>
       </div>
     </aside>
     <!-- Sidebar End -->
 
-    <!-- Main Wrapper -->
+    <!-- Body Wrapper -->
     <div class="body-wrapper">
-      <!-- Header Start -->
       <header class="app-header">
         <nav class="navbar navbar-expand-lg navbar-light">
           <ul class="navbar-nav">
@@ -151,17 +137,14 @@
             </li>
           </ul>
 
-          <!-- User Dropdown -->
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
               <li class="nav-item dropdown">
-                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
-                   data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link nav-icon-hover" href="#" id="drop2" data-bs-toggle="dropdown" aria-expanded="false">
                   <img src="{% static 'images/profile/user-1.jpg' %}" alt="User"
                        width="35" height="35" class="rounded-circle">
                 </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
-                     aria-labelledby="drop2">
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
                     <a href="#" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-user fs-6"></i><p class="mb-0 fs-3">My Profile</p>
@@ -180,23 +163,36 @@
           </div>
         </nav>
       </header>
-      <!-- Header End -->
 
-      <!-- Main Content -->
       <div class="container-fluid mt-4 px-4">
-        {% block content %}
-        <!-- Page-specific content injected here -->
-        {% endblock %}
+        {% block content %}{% endblock %}
       </div>
     </div>
   </div>
 
-  <!-- Scripts -->
+  <!-- ✅ Scripts -->
   <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'js/sidebarmenu.js' %}"></script>
   <script src="{% static 'js/app.min.js' %}"></script>
   <script src="{% static 'libs/simplebar/dist/simplebar.js' %}"></script>
+
+  <!-- ✅ Service Worker Registration -->
+
+  <!-- ✅ Install Prompt (auto-trigger supported) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/serviceworker.js', { scope: '/' })
+        .then(function(reg) {
+          console.log('ServiceWorker registered with scope:', reg.scope);
+        }).catch(function(err) {
+          console.log('ServiceWorker registration failed:', err);
+        });
+      });
+    }
+  </script>
+
   {% block scripts %}{% endblock %}
 </body>
 </html>

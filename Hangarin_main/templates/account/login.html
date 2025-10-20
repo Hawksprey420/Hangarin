@@ -12,6 +12,22 @@
   <link rel="shortcut icon" type="image/png" href="{% static 'images/logos/favicon.png' %}" />
   <link rel="stylesheet" href="{% static 'css/styles.min.css' %}" />
 
+  <!-- PWA Manifest and Theme -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0A0A0A">
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/static/js/serviceworker.js')
+        .then(function(reg) {
+          console.log('✅ Service Worker registered:', reg.scope);
+        })
+        .catch(function(err) {
+          console.error('❌ Service Worker registration failed:', err);
+        });
+    });
+  }
+</script>
   <!-- 🔵 ADDED: clean inline CSS for form styling -->
   <style>
     body {

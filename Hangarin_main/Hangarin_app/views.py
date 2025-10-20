@@ -7,8 +7,10 @@ from .models import Task, Category, Priority, SubTask, Note
 from .forms import TaskForm
 from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 
-
+def home_redirect(request):
+    return redirect('dashboard')
 # --------------------------
 # DASHBOARD VIEW
 # --------------------------
@@ -253,3 +255,4 @@ class NoteDeleteView(DeleteView):
     model = Note
     template_name = 'note_delete.html'
     success_url = reverse_lazy('note-list')
+
