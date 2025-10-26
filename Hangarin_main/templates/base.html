@@ -10,17 +10,14 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="{% static 'images/logos/favicon.png' %}" />
 
-  <!-- ✅ Manifest (correct path for Django) -->
+  <!-- ✅ Manifest -->
   <link rel="manifest" href="/static/manifest.json" crossorigin="use-credentials">
 
-
-  <!-- ✅ PWA Meta Tags -->
+  <!-- ✅ Progressive Web App Meta -->
   {% progressive_web_app_meta %}
-
-  <!-- Theme Color (for mobile status bar) -->
   <meta name="theme-color" content="#0A0A0A">
 
-  <!-- ✅ Bootstrap & Core CSS -->
+  <!-- ✅ Core CSS -->
   <link href="{% static 'css/styles.css' %}" rel="stylesheet">
 
   <!-- CSRF Token -->
@@ -28,15 +25,19 @@
 
   {% block extra_head %}{% endblock %}
 </head>
+
 <body>
   <div class="page-wrapper" id="main-wrapper"
        data-layout="vertical" data-navbarbg="skin6"
        data-sidebartype="full" data-sidebar-position="fixed"
        data-header-position="fixed">
 
-    <!-- Sidebar Start -->
+    <!-- ============================= -->
+    <!-- SIDEBAR -->
+    <!-- ============================= -->
     <aside class="left-sidebar">
       <div>
+        <!-- Logo -->
         <div class="brand-logo d-flex align-items-center justify-content-between">
           <a href="{% url 'dashboard' %}" class="text-nowrap logo-img">
             <img src="{% static 'images/logos/dark-logo.svg' %}" width="180" alt="Hangarin Logo">
@@ -49,6 +50,8 @@
         <!-- Sidebar Navigation -->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">
+
+            <!-- === SECTION: Your Data === -->
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Your Data</span>
@@ -61,6 +64,7 @@
               </a>
             </li>
 
+            <!-- === SECTION: Tasks === -->
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Tasks</span>
@@ -100,27 +104,40 @@
                 <span class="hide-menu">Priorities</span>
               </a>
             </li>
-          </ul>
 
-          {% comment %} <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
-            <div class="d-flex">
-              <div class="unlimited-access-title me-3">
-                <h6 class="fw-semibold fs-4 mb-6 text-dark w-85">Upgrade to Pro</h6>
-                <a href="https://adminmart.com/product/modernize-bootstrap-5-admin-template/"
-                   target="_blank" class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
-              </div>
-              <div class="unlimited-access-img">
-                <img src="{% static 'images/backgrounds/rocket.png' %}" alt="" class="img-fluid">
-              </div>
-            </div>
-          </div> {% endcomment %}
+            <!-- === SECTION: Notes === -->
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Notes</span>
+            </li>
+
+            <li class="sidebar-item {% if request.resolver_match.url_name == 'note-list' %}active{% endif %}">
+              <a class="sidebar-link" href="{% url 'note-list' %}">
+                <span><i class="ti ti-notes"></i></span>
+                <span class="hide-menu">All Notes</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item {% if request.resolver_match.url_name == 'note-add' %}active{% endif %}">
+              <a class="sidebar-link" href="{% url 'note-add' %}">
+                <span><i class="ti ti-plus"></i></span>
+                <span class="hide-menu">Add Note</span>
+              </a>
+            </li>
+
+          </ul>
         </nav>
       </div>
     </aside>
-    <!-- Sidebar End -->
+    <!-- ============================= -->
+    <!-- END SIDEBAR -->
+    <!-- ============================= -->
 
-    <!-- Body Wrapper -->
+    <!-- ============================= -->
+    <!-- MAIN BODY -->
+    <!-- ============================= -->
     <div class="body-wrapper">
+      <!-- Header -->
       <header class="app-header">
         <nav class="navbar navbar-expand-lg navbar-light">
           <ul class="navbar-nav">
@@ -164,22 +181,23 @@
         </nav>
       </header>
 
-      <div class="container-fluid mt-4 px-4">
+      <!-- Content -->
+      <main class="container-fluid mt-4 px-4">
         {% block content %}{% endblock %}
-      </div>
+      </main>
     </div>
   </div>
 
-  <!-- ✅ Scripts -->
+  <!-- ============================= -->
+  <!-- SCRIPTS -->
+  <!-- ============================= -->
   <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'js/sidebarmenu.js' %}"></script>
   <script src="{% static 'js/app.min.js' %}"></script>
   <script src="{% static 'libs/simplebar/dist/simplebar.js' %}"></script>
 
-  <!-- ✅ Service Worker Registration -->
-
-  <!-- ✅ Install Prompt (auto-trigger supported) -->
+  <!-- ✅ Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {

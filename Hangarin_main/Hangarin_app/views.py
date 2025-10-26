@@ -232,7 +232,7 @@ class SubTaskDeleteView(DeleteView):
 # --------------------------
 class NoteListView(ListView):
     model = Note
-    template_name = 'note_list.html'
+    template_name = 'notes_list.html'
     context_object_name = 'notes'
     paginate_by = 20  # Adjust as needed
 
@@ -240,19 +240,19 @@ class NoteListView(ListView):
 class NoteCreateView(CreateView):
     model = Note
     fields = ['task', 'content']
-    template_name = 'note_form.html'
+    template_name = 'notes_form.html'
     success_url = reverse_lazy('note-list')
 
 
 class NoteUpdateView(UpdateView):
     model = Note
     fields = ['task', 'content']
-    template_name = 'note_form.html'
+    template_name = 'notes_form.html'
     success_url = reverse_lazy('note-list')
 
 
 class NoteDeleteView(DeleteView):
     model = Note
-    template_name = 'note_delete.html'
+    template_name = 'notes_delete.html'
     success_url = reverse_lazy('note-list')
 
